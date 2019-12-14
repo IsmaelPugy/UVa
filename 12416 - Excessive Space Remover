@@ -1,0 +1,30 @@
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3847import java.io.*;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+        String n;
+        while ((n=br.readLine())!=null&&!n.equals("")){
+            int amountOFWork =0;
+            int Max = 0;
+            for (int  i=0;i<n.length();i++){
+                if(Character.isSpaceChar(n.charAt(i))){
+                    //have a hilwe loop
+                    int amountOfSpace = 0;
+                    while (i<n.length()&Character.isSpaceChar(n.charAt(i))){
+                        amountOfSpace++;
+                        i++;
+                    }
+                  Max = Math.max(amountOfSpace,Max);
+                }
+
+            }
+            int answer = (int)Math.ceil(Math.log(Max)/Math.log(2));
+            pw.write(answer+"\n");
+        }
+        pw.flush();
+    }
+}
