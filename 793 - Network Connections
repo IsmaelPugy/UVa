@@ -1,0 +1,68 @@
+793 - Network Connections
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=734
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+static int TC;
+static int computer;
+static int [] union;
+static StringTokenizer st;
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter writer =new BufferedWriter(new OutputStreamWriter(System.out));
+        TC = Integer.parseInt(br.readLine());
+        br.readLine();
+        String n;
+        while (TC-->0){
+            computer = Integer.parseInt(br.readLine());
+            int answer = 0;
+            int unanswer = 0;
+            createUnion();
+          //  System.out.println(Arrays.toString(union));
+            while ((n=br.readLine())!=null&&!n.equals("")&&!n.isEmpty()){
+
+                st = new StringTokenizer(n);
+                String actinon = st.nextToken();
+                int u = Integer.parseInt(st.nextToken());
+                int v = Integer.parseInt(st.nextToken());
+                if(actinon.equals("c"))
+                unite(u,v);
+                else if(areConnected(u,v))
+                    answer++;
+                else
+                    unanswer++;
+            }
+            writer.write(answer+","+unanswer+"\n");
+            if(TC>0)
+            writer.write("\n");
+
+        }
+        writer.flush();
+
+    }
+
+    private static void createUnion() {
+        union = new int[computer+1];
+        for (int i=0;i<=computer;i++)
+            union[i]  = i;
+    }
+    static void unite(int x,int y){
+        union[find(x)] = find(y);
+    }
+    static int find(int x){
+        if(union[x]==x)
+            return x;
+        else
+        {
+            union[x] = find(union[x]);
+            return union[x];
+        }
+    }
+    static boolean areConnected(int x, int y){
+        return find(x)==find(y);
+    }
+}
