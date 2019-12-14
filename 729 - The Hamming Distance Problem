@@ -1,0 +1,45 @@
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=670
+import java.io.*;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+
+public class Main {
+static int TC;
+static int N,C;
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+        TC= Integer.parseInt(br.readLine());
+        while (TC-->0){
+            br.readLine();
+            StringTokenizer st= new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            C  = Integer.parseInt(st.nextToken());
+            TreeSet<String> sets = new TreeSet<>();
+           permuation(sets,C,"");
+          for (String u:sets)
+              pw.write(u+"\n");
+          if(TC>0)
+          pw.write("\n");
+
+        }
+        pw.flush();
+    }
+
+    private static void permuation(TreeSet<String> sets, int one, String s) {
+        if(s.length()==N&&one==0)
+            sets.add(s);
+        else if(s.length()==N)
+            ;
+        else
+        {
+           String ones = s+'1';
+           String zero = s+'0';
+           if(one>0)
+               permuation(sets,one-1,ones);
+           permuation(sets,one,zero);
+
+            }
+        }
+    }
