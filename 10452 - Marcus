@@ -1,0 +1,66 @@
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1393import 
+java.io.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+public class Main {
+static int TC,r,c,startingRow,startingCol;
+static String [][] grid= new String[8][8];
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+        TC  = Integer.parseInt(br.readLine());
+        String line;
+        while ((line=br.readLine())!=null&&!line.equals("")){
+            StringTokenizer st= new StringTokenizer(line);
+            r = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
+            for (int row = 0;row<r;row++)
+            {
+                line = br.readLine();
+                for (int col = 0;col<c;col++){
+                    String chararacter = ""+line.charAt(col);
+                    if(chararacter.equals("@")) {
+                        startingRow = row;
+                        startingCol = col;
+                    }
+                    grid[row][col] = chararacter;
+                }
+            }
+            //pathFinding
+            pathFinding("IEHOVA#",new ArrayList<>(),pw,startingRow,startingCol);
+        }
+        pw.flush();
+    }
+
+    private static void pathFinding(String iehova, ArrayList<Object> objects, PrintWriter pw, int row, int col) {
+      //  System.out.println(objects+" "+iehova);
+        if(iehova.length()==0)
+            //base case
+        {
+            for (int i=0;i<objects.size();i++) {
+                pw.write("" + objects.get(i));
+                if(i!=objects.size()-1)
+                    pw.write(" ");
+            }
+            pw.write("\n");
+        }else{
+          //  System.out.println(grid[row][col]);
+            //go up
+            if(row-1>=0&&grid[row-1][col].equals(""+iehova.charAt(0))){
+                objects.add("forth");
+                pathFinding(iehova.substring(1),objects,pw,row-1,col);
+            }//go right
+            else if(col+1<c&&grid[row][col+1].equals(""+iehova.charAt(0))){
+                objects.add("right");
+                pathFinding(iehova.substring(1),objects,pw,row,col+1);
+            }
+            else if(col-1>=0&&grid[row][col-1].equals(""+iehova.charAt(0))){
+                objects.add("left");
+                pathFinding(iehova.substring(1),objects,pw,row,col-1);
+            }
+        }
+
+    }
+}
