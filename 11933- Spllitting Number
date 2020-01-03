@@ -1,0 +1,28 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in
+        ));
+        PrintWriter pw =new PrintWriter(new OutputStreamWriter(System.out));
+        String line;
+        while ((line=br.readLine())!=null&&!line.equals("0")) {
+            int n = Integer.parseInt(line);
+            int a = 0;
+            int b =0;
+           int  j=0;
+             while (n!=0){
+                    if (j%2==0){
+                        a|=n&(-n);
+                    }else
+                        b|=n&(-n);
+                    j++;
+                    n =(n&(n-1));
+             }
+            System.out.println(a+" "+b);
+        }
+    }
+}
