@@ -1,0 +1,28 @@
+import java.io.*;
+import java.math.BigInteger;
+import java.util.Scanner;
+import java.util.function.BiFunction;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw =new PrintWriter(new OutputStreamWriter(System.out));
+        String line;
+        while ((line=br.readLine())!=null&&!line.equals("")) {
+            BigInteger B = new BigInteger(line);
+            BigInteger P =new BigInteger(String.valueOf(br.readLine()));
+            BigInteger M = new BigInteger(String.valueOf(br.readLine()));
+            BigInteger parenthess = B.mod(M);
+          //  pw.println(parenthess.toString());
+            BigInteger power = parenthess.modPow(BigInteger.valueOf(Integer.parseInt(P.toString())),M);
+          //  pw.println(power.toString());
+         //   BigInteger modulous = power.mod(M);
+            br.readLine();
+            pw.println(power);
+        }
+        pw.flush();
+
+    }
+}
