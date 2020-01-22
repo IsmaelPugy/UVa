@@ -1,0 +1,89 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        // write your code here
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int Case =1;
+        int k = Integer.parseInt(br.readLine());
+        StringTokenizer st;
+        for (int i = 0; i < k; i++) {
+            st = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            int S = Integer.parseInt(st.nextToken());
+            int T = Integer.parseInt(st.nextToken());
+            ArrayList<pair> arrayList[] = new ArrayList[n];
+            for (int j = 0; j < n; j++)
+                arrayList[j] = new ArrayList<>();
+            for (int j = 0; j < m; j++) {
+                st = new StringTokenizer(br.readLine());
+                int u = Integer.parseInt(st.nextToken());
+                int v = Integer.parseInt(st.nextToken());
+                int weight = Integer.parseInt(st.nextToken());
+                arrayList[u].add(new pair(v,weight));
+                arrayList[v].add(new pair(u,weight));
+
+            }
+            System.out.println("Case #"+Case+": "+dijstra(S,T,arrayList));
+            Case++;
+
+
+        }
+    }
+    public static String dijstra(int source, int T, ArrayList<pair>[] arrayList)
+    {
+        int [] dist =new int[arrayList.length];
+        Arrays.fill(dist,1000000000);
+        dist[source] = 0;
+        PriorityQueue<pair> pq = new PriorityQueue<>();
+        pq.offer(new pair(source,0));
+        while (!pq.isEmpty())
+        {
+            pair top = pq.poll();
+            int d = top.weight;
+            int u = top.u;
+            if (d>dist[u])continue;
+            Iterator it = arrayList[u].iterator();
+            while (it.hasNext())
+            {
+                pair p = (pair) it.next();
+                int v = p.u;
+                int weight_u_v = p.weight;
+                if (dist[u]+weight_u_v<dist[v])
+                {
+                    dist[v] = weight_u_v+dist[u];
+                    pq.add(new pair(v,dist[v]));
+                }
+            }
+        }
+       if (dist[T]==1000000000)
+           return "unreachable";
+        return String.valueOf(dist[T]);
+    }
+    static class  pair implements Comparable<pair>
+    {
+        int u;
+        int weight;
+        pair(int u,int weight)
+        {
+            this.u = u;
+            this.weight = weight;
+        }
+
+        @Override
+        public int compareTo(pair o) {
+            return weight- ((pair)o).weight;
+        }
+
+        @Override
+        public String toString() {
+            return u+" "+weight;
+        }
+    }
+}
