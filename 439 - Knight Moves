@@ -1,0 +1,66 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+    static long n, k, T, N, index,start,end;
+    static int startR,startC,endR,endC;
+    static StringTokenizer st;
+    static Scanner in = new Scanner(System.in);
+    static char[] word;
+    static StringBuilder sb = new StringBuilder();
+    static long[] factorial = new long[22];
+    static ArrayList<Integer>[] graph = new ArrayList[65];
+    public static void main(String[] args) throws IOException {
+
+       for (int i=1;i<=64;i++)
+           graph[i] = new ArrayList<>();
+        //create a graph for chess
+        int X[] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+        int Y[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+        for (int row=1;row<=8;row++){
+            for (int col = 1;col<=8;col++){
+                for (int i=0;i<8;i++){
+                    int x = row+X[i];
+                    int y = col+Y[i];
+                    if (x>=1&&y>=1&&x<=8&&y<=8) {
+                      //  System.out.println(row);
+                        graph[(row - 1) * 8 + col].add((x - 1) * 8 + y);
+                    }
+                }
+            }
+        }
+    while ((line=br.readLine())!=null&&!line.equals("")){
+            st = new StringTokenizer(line);
+            String starts = st.nextToken();
+            startC = ((int)starts.charAt(0))-96;
+            startR = Integer.parseInt(starts.substring(1));
+            String end = st.nextToken();
+            endC = ((int)end.charAt(0))-96;
+            endR = Integer.parseInt(end.substring(1));
+            //use a bfs search method to find the shortest path
+            bfs(starts,end);
+        }
+        pw.flush();
+    }
+
+    private static void bfs(String starts, String end) {
+       int [] distance = new int[65];
+       Arrays.fill(distance,Integer.MAX_VALUE);
+        distance[((startR - 1) * 8 + startC)]=0;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add((startR - 1) * 8 + startC);
+        while (!queue.isEmpty()){
+            int u  = queue.poll();
+            for (int j=0;j<graph[u].size();j++){
+                int v = graph[u].get(j);
+                if (distance[v]==Integer.MAX_VALUE){
+                    distance[v] = distance[u]+1;
+                    queue.add(v);
+                }
+            }
+        }
+        pw.println("To get from "+starts+" to "+end+" takes "+distance[((endR - 1) * 8 + endC)]+" knight moves.");
+    }
+}
