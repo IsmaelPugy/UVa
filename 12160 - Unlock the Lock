@@ -1,0 +1,47 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Main {
+static int L,U,R,Case = 1;
+static ArrayList<Integer> buttons = new ArrayList<>();
+static String line = "";
+static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        while ((line=br.readLine())!=null&&!line.equals("0 0 0")){
+            StringTokenizer st = new StringTokenizer(line);
+            L = Integer.parseInt(st.nextToken());
+            U = Integer.parseInt(st.nextToken());
+            R = Integer.parseInt(st.nextToken());
+          st = new StringTokenizer(br.readLine());
+          buttons.clear();
+          while (st.hasMoreTokens())
+              buttons.add(Integer.parseInt(st.nextToken()));
+            Queue<Integer> queue = new LinkedList<>();
+            queue.add(L);
+            int [] distance = new int[10000];
+            while (!queue.isEmpty()){
+                int u= queue.poll();
+                for (int i=0;i<buttons.size();i++){
+                    int v = (u+buttons.get(i))%10000;
+                    if (distance[v]==0){
+                        distance[v] = distance[u]+1;
+                        queue.add(v);
+                    }
+                }
+            }
+           if (L==R)
+               pw.println("Case "+(Case++)+": 0");
+           else if (distance[U]!=0){
+               pw.println("Case "+(Case++)+": "+distance[U]);
+           }
+           else
+               pw.println("Case "+(Case++)+": Permanently Locked");
+        }
+        pw.flush();
+    }
+}
