@@ -1,0 +1,89 @@
+import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Main {
+static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+static int L,R,C,startRow,startCOl,startLevel,endROw,endCol,endLevel;
+static char [][][] dungeon = new char[30][30][30];
+static StringTokenizer st;
+static String line;
+  static   int [][][] distance = new int[30][30][30];
+    public static void main(String[] args) throws IOException {
+	// write your code here
+      while  ((line=br.readLine())!=null&&!line.equals("0 0 0")&&!line.equals(""))
+    {
+           // System.out.println(line);
+            st = new StringTokenizer(line);
+            L = Integer.parseInt(st.nextToken());
+            R = Integer.parseInt(st.nextToken());
+            C= Integer.parseInt(st.nextToken());
+            for (int i=0;i<L;i++){
+                for (int j=0;j<R;j++){
+                    line = br.readLine();
+                    for (int k=0;k<C;k++){
+                        char single  = line.charAt(k);
+                        if (single=='S'){
+                            startLevel = i;
+                            startRow = j;
+                            startCOl = k;
+                        }else if (single=='E'){
+                            endROw = j;
+                            endCol = k;
+                            endLevel = i;
+                        }
+                       // System.out.println(j+" "+k);
+                        dungeon[j][k][i] = single;
+                    }
+
+                }
+                br.readLine();
+            }
+            bfs(startLevel,startRow,startCOl);
+        }
+pw.flush();
+    }
+static int[] dX = {1,-1,0,0,0,0};
+static int [] dy ={0,0,1,-1,0,0};
+static int [] dz = {0,0,0,0,1,-1};
+    private static void bfs(int startLevel, int startRow, int startCOl) {
+        //x is col
+        //y is row
+        //z is level
+        Queue<IntegerTriple> queue = new LinkedList<>();
+        queue.add(new IntegerTriple(startRow,startCOl,startLevel));
+        for (int i=0;i<30;i++)
+            for (int j = 0;j<30;j++)
+                for (int k=0;k<30;k++)
+                    distance[i][j][k] = Integer.MAX_VALUE;
+        distance[startRow][startCOl][startLevel] = 0;
+        while (!queue.isEmpty()){
+            IntegerTriple u = queue.poll();
+            for (int i=0;i<6;i++){
+            int y = u.y+dy[i];
+            int x= u.x+dX[i];
+            int z = u.z+dz[i];
+            if (x>=0&&x<C&&y>=0&&y<R&&z>=0&&z<L&&distance[y][x][z]==Integer.MAX_VALUE&&
+                    dungeon[y][x][z]!='#'){
+                queue.add(new IntegerTriple(y,x,z));
+                distance[y][x][z]=distance[u.y][u.x][u.z] +1;
+            }
+            }
+        }
+        if (distance[endROw][endCol][endLevel]==Integer.MAX_VALUE)
+            pw.println("Trapped!");
+        else
+        pw.println("Escaped in "+distance[endROw][endCol][endLevel]+" minute(s).");
+
+    }
+    static class IntegerTriple{
+        int x,y,z;
+        IntegerTriple(int y, int x, int z){
+            this.x  =x;
+            this.y =y ;
+            this.z =z;
+        }
+    }
+}
