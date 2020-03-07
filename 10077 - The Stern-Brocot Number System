@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+    static  int n,k,T,N,m;
+    static StringTokenizer st;
+    static Scanner in = new Scanner(System.in);
+    static char [] word;
+    public static void main(String[] args) throws IOException {
+        while ((line=br.readLine())!=null&&!line.equals("1 1")){
+            StringBuilder answer = new StringBuilder();
+            double leftNumerator = 0;
+            double leftDenomitor = 1;
+            double rightNumerator = 1;
+            double rightDenomitor = 0;
+            double currentNumerator = 1.0;
+            double currentDenomitor = 1.0;
+            st = new StringTokenizer(line);
+            double targetNumerator = Double.parseDouble(st.nextToken());
+            double targetDenomitor = Double.parseDouble(st.nextToken());
+            while (currentNumerator!=targetNumerator||currentDenomitor!=targetDenomitor){
+                    if (currentNumerator/currentDenomitor<targetNumerator/targetDenomitor){
+                        leftNumerator = currentNumerator;
+                        leftDenomitor = currentDenomitor;
+                        //go right
+                        currentNumerator+=rightNumerator;
+                        currentDenomitor+=rightDenomitor;
+                        answer.append("R");
+                    }
+                    else{
+                        rightNumerator = currentNumerator;
+                        rightDenomitor = currentDenomitor;
+                        //go left
+                        currentNumerator+=leftNumerator;
+                        currentDenomitor+=leftDenomitor;
+                        answer.append("L");
+                    }
+            }
+            pw.println(answer.toString());
+        }
+        pw.flush();
+
+    }
+}
