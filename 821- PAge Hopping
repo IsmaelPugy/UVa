@@ -1,0 +1,57 @@
+import java.io.*;
+import java.text.DecimalFormat;
+import java.util.*;
+public class Main {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+    static  int n,k,T=1,N,m;
+    static int INF = Integer.MAX_VALUE;
+    static StringTokenizer st;
+    static Scanner in = new Scanner(System.in);
+    static int [][] graph = new int[101][101];
+    static HashMap<Integer,Integer> map = new HashMap<>();
+    static HashSet<Integer> set =new HashSet<>();
+    private static DecimalFormat df2 = new DecimalFormat("#.###");
+    public static void main(String[] args) throws IOException {
+    while ((line=br.readLine())!=null&&!line.equals("0 0")){
+            for (int i=0;i<101;i++)
+                for (int j=0;j<101;j++)
+                    graph[i][j] = 1000000;
+        for (int i=0;i<=100;i++)
+            graph[i][i] = 0;
+        st = new StringTokenizer(line);
+        while (st.hasMoreTokens()){
+            int u = Integer.parseInt(st.nextToken());
+            int  v = Integer.parseInt(st.nextToken());
+            if (u!=0&&v!=0)
+            graph[u][v] = 1;
+        }
+        double path =0.0;
+        //Roy - Warshall Aglgorthim
+        for (int k=1;k<101;k++)
+            for (int i=1;i<101;i++)
+                for (int j=1;j<101;j++) {
+                    if (graph[i][j]>graph[i][k] + graph[k][j]) {
+                        graph[i][j] = Math.min(graph[i][j], graph[i][k] + graph[k][j]);
+
+                    }
+                }
+
+     double sum =0.0;
+
+     for (int i=1;i<=100;i++){
+         //the u is i
+        for (int j=1;j<=100;j++){
+            if (graph[i][j]!=1000000&&graph[i][j]!=0) {
+                sum += graph[i][j];
+                path++;
+            }
+        }
+     }
+     pw.printf("Case "+(T++)+": average length between pages = %.3f clicks\n",(sum/path));
+    }
+        pw.flush();
+
+    }
+
