@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+    static  int n,k,T,N,m,Q,q,R,C,x,M,id,x0,y0,g,y,d;
+    static StringTokenizer st;
+    static Scanner in = new Scanner(System.in);
+    static char [][] word;
+    static BitSet onStack = new BitSet(100000);
+    static ArrayList<Integer> graph[];
+    static int [] low,ids;
+    static Stack<Integer>stack;
+    public static void main(String[] args) throws IOException {
+        while ((line=br.readLine())!=null&&!line.equals("")){
+            st=  new StringTokenizer(line);
+            extendedEuclid(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+            pw.println(x+" "+y+" "+d);
+        }
+        pw.flush();
+
+    }
+
+   static void extendedEuclid(int a, int b){
+        if (b==0) {x=1; y=0;d=a;return;}
+        extendedEuclid(b,a%b);
+        int x1 = y;
+        int y1 = x-(a/b)*y;
+        x = x1;
+        y = y1;
+   }
+}
