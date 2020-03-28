@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+public class Main {
+static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+static PrintWriter ow =new PrintWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        //standard MST
+        String line ="";
+        while ((line=br.readLine())!=null&&!line.equals("0 0")){
+            HashMap<String,Integer> map = new HashMap<>();
+            int T =0;
+            StringTokenizer st =new StringTokenizer(line);
+            int V = Integer.parseInt(st.nextToken());
+            DisjointSet ds= new DisjointSet(V);
+            int edge = Integer.parseInt(st.nextToken());
+            for (int i=0;i<V;i++)
+                map.put(br.readLine(),T++);
+            Edge [] arr = new Edge[edge];
+            for (int i=0;i<edge;i++){
+                st = new StringTokenizer(br.readLine());
+                arr[i] = new Edge(map.get(st.nextToken()),map.get(st.nextToken()),Integer.parseInt(st.nextToken()));
+            }
+            br.readLine();
+            Arrays.sort(arr);
+            int sum =0;
+            for (int i=0;i<edge;i++){
+                int u = arr[i].u;
+                int v = arr[i].v;
+                if (ds.union_set(u,v)){
+                    sum+=arr[i].weight;
+                }
+            }
+            if (ds.N==1){
+                System.out.println(sum);
+            }else{
+                System.out.println("Impossible");
+            }
+        }
+    }
+    public static class Edge implements Comparable<Edge>{
+        int u,v,weight;
+        Edge(int u,int v, int weight){
+            this.u =u ;
+            this.v =v ;
+            this.weight = weight;
+        }
+
+        @Override
+        public int compareTo(Edge edge) {
+            return weight-edge.weight;
+        }
+    }
+    public static class DisjointSet{
+        int V;
+        int N;
+        int arr[];
+        DisjointSet(int V){
+            this.V = V;
+            N = V;
+            arr = new int[V];
+            for (int i=0;i<N;i++)
+                arr[i] = i;
+
+        }
+        public int findSet(int v){
+            if (v==arr[v])
+                return v;
+            return arr[v] = findSet(arr[v]);
+        }
+        boolean union_set(int a, int b){
+             a   = findSet(a);
+             b = findSet(b);
+             if (a!=b){
+                 arr[b] = a;
+                 N--;
+                 return true;
+             }
+             return false;
+        }
+    }
+}
